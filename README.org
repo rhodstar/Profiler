@@ -1,0 +1,15 @@
+#+TITLE: Profiler
+#+AUTHOR: Rodrigo Francisco Pablo, Emanuel Flores Martínez, Alexis
+#+DATE:  <2021-12-10>
+#+LATEX_HEADER: \usepackage[total={17cm,23cm}, top=2cm, left=2cm]{geometry}
+#+LATEX_HEADER: \renewcommand{\familydefault}{\sfdefault}
+#+LATEX_HEADER: \renewcommand\thepage{}
+#+LATEX_HEADER: \parindent=0mm
+#+OPTIONS: num:nil toc:nil
+
+#+ATTR_ORG: :width 300
+#+ATTR_HTML: :width 300
+#+ATTR_LATEX: :width 8cm
+[[./README.assets/cv.png]]
+
+Simple app for Talent Recruitment Hunting using Django, Docker and various monitoring tools.
