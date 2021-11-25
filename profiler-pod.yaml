@@ -1,0 +1,78 @@
+# Generation of Kubernetes YAML is still under development!
+#
+# Save the output of this file and use kubectl create -f to import
+# it into Kubernetes.
+#
+# Created with podman-3.3.1
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: "2021-11-25T05:15:56Z"
+  labels:
+    app: profiler-pod
+  name: profiler-pod
+spec:
+  containers:
+  - args:
+    - postgres
+    command:
+    - docker-entrypoint.sh
+    env:
+    - name: LANG
+      value: en_US.utf8
+    - name: POSTGRES_USER
+      value: admin
+    - name: POSTGRES_PASSWORD
+      value: admin
+    - name: POSTGRES_DATABASE
+      value: profilerdb
+    image: docker.io/library/postgres:latest
+    name: pgdb
+    ports:
+    - containerPort: 5432
+      hostPort: 5432
+      protocol: TCP
+    - containerPort: 8001
+      hostPort: 8001
+      protocol: TCP
+    - containerPort: 8002
+      hostPort: 8002
+      protocol: TCP
+    - containerPort: 8003
+      hostPort: 8003
+      protocol: TCP
+    - containerPort: 8004
+      hostPort: 8004
+      protocol: TCP
+    - containerPort: 8005
+      hostPort: 8005
+      protocol: TCP
+    - containerPort: 443
+      hostPort: 443
+      protocol: TCP
+    - containerPort: 80
+      hostPort: 80
+      protocol: TCP
+    resources: {}
+    securityContext:
+      allowPrivilegeEscalation: true
+      capabilities:
+        drop:
+        - CAP_MKNOD
+        - CAP_AUDIT_WRITE
+      privileged: false
+      readOnlyRootFilesystem: false
+      seLinuxOptions: {}
+    volumeMounts:
+    - mountPath: /var/lib/postgresql/data
+      name: lv-database-efrfar-host-0
+    workingDir: /
+  dnsConfig: {}
+  restartPolicy: Never
+  volumes:
+  - hostPath:
+      path: /lv-database-efrfar
+      type: Directory
+    name: lv-database-efrfar-host-0
+status: {}
+
