@@ -1,0 +1,27 @@
+#+TITLE: System monitoring
+
+** Pipeline
+
+#+begin_src shell
+Cadvisor -> Prometheus -> Grafana
+#+end_src
+
+*NOTE:* Grafana /data source/ must be configure manually, we must use prometheus.
+
+** Commands
+
+- Run all monitoring tools
+  #+begin_src shell
+    docker-compose up
+  #+end_src
+- Stop all containers
+  #+begin_src
+    docker stop $(docker container ls -aq)
+  #+end_src
+
+
+** Shortcuts
+
+- Cadvisor: [[http://localhost:8080]]
+- Prometheus: [[http://localhost:9090]]
+- Grafana: [[http://localhost:3000]]
