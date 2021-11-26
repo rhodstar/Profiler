@@ -8,7 +8,23 @@ Cadvisor -> Prometheus -> Grafana
 
 *NOTE:* Grafana /data source/ must be configure manually, we must use prometheus.
 
-** Commands
+** Installation
+
+#+begin_src shell
+./create-pod.sh
+#+end_src
+
+#+begin_src shell
+./create-service.sh
+#+end_src
+
+We can also stop and delete the created container with the main pod and the network with
+
+#+begin_src shell
+./delete-pod.sh
+#+end_src
+
+** Commands using docker
 
 - Run all monitoring tools
   #+begin_src shell
