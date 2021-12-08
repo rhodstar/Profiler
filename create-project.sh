@@ -8,6 +8,8 @@ podman volume create static_volume
 
 podman pod create -p 5432:5432 -p 8000:8000 -p 443:443 -p 80:80 --name studybuddy-pod
 
+podman run --name studybuddy-pgdb --pod studybuddy-pod -e POSTGRES_DB=studybuddb -e POSTGRES_USER=dbuser -e POSTGRES_PASSWORD=admin -d -v "/lv-database-efrfar:/var/lib/postgresql/data:z" postgres
+
 buildah bud -t localhost/studybuddy-django StudyBud/
 podman run --name studybuddy-django -d --pod studybuddy-pod -v "static_volume:/app/staticfiles:z" localhost/studybuddy-django
 

@@ -1,0 +1,165 @@
+# Generation of Kubernetes YAML is still under development!
+#
+# Save the output of this file and use kubectl create -f to import
+# it into Kubernetes.
+#
+# Created with podman-3.3.1
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: "2021-12-08T19:23:02Z"
+  labels:
+    app: studybuddy-pod
+  name: studybuddy-pod
+spec:
+  containers:
+  - args:
+    - nginx
+    - -g
+    - daemon off;
+    command:
+    - /docker-entrypoint.sh
+    env:
+    - name: PATH
+      value: /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+    - name: NGINX_VERSION
+      value: 1.21.4
+    - name: NJS_VERSION
+      value: 0.7.0
+    - name: PKG_RELEASE
+      value: 1~bullseye
+    image: localhost/studybuddy-nginx:latest
+    name: studybuddy-nginx
+    ports:
+    - containerPort: 5432
+      hostPort: 5432
+      protocol: TCP
+    - containerPort: 8000
+      hostPort: 8000
+      protocol: TCP
+    - containerPort: 443
+      hostPort: 443
+      protocol: TCP
+    - containerPort: 80
+      hostPort: 80
+      protocol: TCP
+    resources: {}
+    securityContext:
+      allowPrivilegeEscalation: true
+      capabilities:
+        drop:
+        - CAP_MKNOD
+        - CAP_AUDIT_WRITE
+      privileged: false
+      readOnlyRootFilesystem: false
+      seLinuxOptions: {}
+    volumeMounts:
+    - mountPath: /etc/ssl/certs
+      name: root-certs-host-0
+    - mountPath: /etc/ssl/private
+      name: root-private-host-1
+    - mountPath: /app/staticfiles
+      name: static_volume-pvc
+    workingDir: /
+  - args:
+    - postgres
+    command:
+    - docker-entrypoint.sh
+    env:
+    - name: POSTGRES_PASSWORD
+      value: admin
+    - name: LANG
+      value: en_US.utf8
+    - name: PG_MAJOR
+      value: "14"
+    - name: POSTGRES_DB
+      value: studybuddb
+    - name: GOSU_VERSION
+      value: "1.14"
+    - name: POSTGRES_USER
+      value: dbuser
+    - name: PG_VERSION
+      value: 14.1-1.pgdg110+1
+    - name: PGDATA
+      value: /var/lib/postgresql/data
+    image: docker.io/library/postgres:latest
+    name: studybuddy-pgdb
+    resources: {}
+    securityContext:
+      allowPrivilegeEscalation: true
+      capabilities:
+        drop:
+        - CAP_MKNOD
+        - CAP_AUDIT_WRITE
+      privileged: false
+      readOnlyRootFilesystem: false
+      seLinuxOptions: {}
+    volumeMounts:
+    - mountPath: /var/lib/postgresql/data
+      name: lv-database-efrfar-host-0
+    workingDir: /
+  - command:
+    - /bin/sh
+    - -c
+    - set -xe; python manage.py migrate --noinput; gunicorn studybud.wsgi:application
+    env:
+    - name: PYTHON_GET_PIP_URL
+      value: https://github.com/pypa/get-pip/raw/4be3fe44ad9dedc028629ed1497052d65d281b8e/get-pip.py
+    - name: STUDYBUD_DATABASE_NAME
+      value: studybuddb
+    - name: PYTHON_PIP_VERSION
+      value: 21.0.1
+    - name: PYTHONUNBUFFERED
+      value: "1"
+    - name: STUDYBUD_DATABASE_PASSWORD
+      value: admin
+    - name: LANG
+      value: C.UTF-8
+    - name: STUDYBUD_DATABASE_PORT
+      value: "5432"
+    - name: PORT
+      value: "8000"
+    - name: PYTHON_VERSION
+      value: 3.9.1
+    - name: STUDYBUD_DATABASE_HOST
+      value: 127.0.0.1
+    - name: STUDYBUD_DATABASE_USER
+      value: dbuser
+    image: localhost/studybuddy-django:latest
+    name: studybuddy-django
+    resources: {}
+    securityContext:
+      allowPrivilegeEscalation: true
+      capabilities:
+        drop:
+        - CAP_MKNOD
+        - CAP_AUDIT_WRITE
+      privileged: false
+      readOnlyRootFilesystem: false
+      runAsGroup: 1000
+      runAsUser: 1000
+      seLinuxOptions: {}
+    volumeMounts:
+    - mountPath: /app/staticfiles
+      name: static_volume-pvc
+    workingDir: /app
+  dnsConfig: {}
+  restartPolicy: Never
+  volumes:
+  - hostPath:
+      path: /root/certs
+      type: Directory
+    name: root-certs-host-0
+  - hostPath:
+      path: /root/private
+      type: Directory
+    name: root-private-host-1
+  - name: static_volume-pvc
+    persistentVolumeClaim:
+      claimName: static_volume
+  - hostPath:
+      path: /lv-database-efrfar
+      type: Directory
+    name: lv-database-efrfar-host-0
+status: {}
+
